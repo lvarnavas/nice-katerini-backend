@@ -15,8 +15,8 @@ const getLoads = async (req, res, next) => {
       loads =
         "SET @sql = NULL; " +
         "SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(IF(p.id = ', p.id, ', t.quantity, 0)) AS `', p.name, '`') ORDER BY p.id) INTO @sql " +
-        "FROM mydb.products p; " +
-        "SET @sql = CONCAT('SELECT l.date, l.id, ', @sql, ' FROM mydb.loads l JOIN mydb.transfers t ON l.id = t.loads_id JOIN mydb.products p ON t.products_id = p.id WHERE l.car_id = " +
+        "FROM katerinidb.products p; " +
+        "SET @sql = CONCAT('SELECT l.date, l.id, ', @sql, ' FROM katerinidb.loads l JOIN katerinidb.transfers t ON l.id = t.loads_id JOIN katerinidb.products p ON t.products_id = p.id WHERE l.car_id = " +
         `${carId}` +
         " AND l.date BETWEEN \\'" +
         `${startDate}` +
@@ -33,8 +33,8 @@ const getLoads = async (req, res, next) => {
       loads =
         "SET @sql = NULL; " +
         "SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(IF(p.id = ', p.id, ', t.quantity, 0)) AS `', p.name, '`') ORDER BY p.id) INTO @sql " +
-        "FROM mydb.products p; " +
-        "SET @sql = CONCAT('SELECT c.pinakida AS `Pinakida`, ', @sql, ' FROM mydb.loads l JOIN mydb.transfers t ON l.id = t.loads_id JOIN mydb.products p ON t.products_id = p.id JOIN mydb.cars c ON l.car_id = c.id WHERE l.date BETWEEN \\'" +
+        "FROM katerinidb.products p; " +
+        "SET @sql = CONCAT('SELECT c.pinakida AS `Pinakida`, ', @sql, ' FROM katerinidb.loads l JOIN katerinidb.transfers t ON l.id = t.loads_id JOIN katerinidb.products p ON t.products_id = p.id JOIN katerinidb.cars c ON l.car_id = c.id WHERE l.date BETWEEN \\'" +
         `${startDate}` +
         "\\' AND \\'" +
         `${endDate}` +
@@ -74,8 +74,8 @@ const getDestructions = async (req, res, next) => {
       destructions =
         "SET @sql = NULL; " +
         "SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(IF(p.id = ', p.id, ', t.quantity, 0)) AS `', p.name, '`') ORDER BY p.id) INTO @sql " +
-        "FROM mydb.products p; " +
-        "SET @sql = CONCAT('SELECT c.pinakida AS `Pinakida`, ', @sql, ' FROM mydb.car_destructions l JOIN mydb.car_destruction_transaction t ON l.id = t.car_destructions_id JOIN mydb.products p ON t.products_id = p.id JOIN mydb.cars c ON l.cars_id = c.id WHERE l.date BETWEEN \\'" +
+        "FROM katerinidb.products p; " +
+        "SET @sql = CONCAT('SELECT c.pinakida AS `Pinakida`, ', @sql, ' FROM katerinidb.car_destructions l JOIN katerinidb.car_destruction_transaction t ON l.id = t.car_destructions_id JOIN katerinidb.products p ON t.products_id = p.id JOIN katerinidb.cars c ON l.cars_id = c.id WHERE l.date BETWEEN \\'" +
         `${startDate}` +
         "\\' AND \\'" +
         `${endDate}` +
@@ -86,7 +86,7 @@ const getDestructions = async (req, res, next) => {
     } else if (flag === "dailyCarDestructions") {
       // [QUERY 6] -> ΚΑΤΑΣΤΡΟΦΕΣ ΗΜΕΡΑΣ ΑΜΑΞΙΩΝ
       destructions =
-        "SET @sql_products = NULL;SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(CASE WHEN cdt.products_id = ',p.id,' THEN cdt.quantity ELSE 0 END) AS `',p.name,'`')) INTO @sql_products FROM mydb.car_destruction_transaction AS cdt JOIN mydb.products AS p ON cdt.products_id = p.id;SET @sql = CONCAT('SELECT DATE(cd.date) AS date, ', @sql_products, ' FROM mydb.car_destructions AS cd JOIN mydb.car_destruction_transaction AS cdt ON cd.id = cdt.car_destructions_id JOIN mydb.products AS p ON cdt.products_id = p.id WHERE cd.date BETWEEN \\'" +
+        "SET @sql_products = NULL;SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(CASE WHEN cdt.products_id = ',p.id,' THEN cdt.quantity ELSE 0 END) AS `',p.name,'`')) INTO @sql_products FROM katerinidb.car_destruction_transaction AS cdt JOIN katerinidb.products AS p ON cdt.products_id = p.id;SET @sql = CONCAT('SELECT DATE(cd.date) AS date, ', @sql_products, ' FROM katerinidb.car_destructions AS cd JOIN katerinidb.car_destruction_transaction AS cdt ON cd.id = cdt.car_destructions_id JOIN katerinidb.products AS p ON cdt.products_id = p.id WHERE cd.date BETWEEN \\'" +
         `${startDate}` +
         "\\' AND \\'" +
         `${endDate}` +
@@ -96,8 +96,8 @@ const getDestructions = async (req, res, next) => {
       destructions =
         "SET @sql_products = NULL; " +
         "SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(IF(p.id = ', p.id, ', t.quantity, 0)) AS `', p.name, '`') ORDER BY p.id) INTO @sql_products " +
-        "FROM mydb.products p; " +
-        "SET @sql = CONCAT('SELECT wd.id AS ID, wd.date AS Date, ', @sql_products, ' FROM mydb.warehouse_destructions wd JOIN mydb.warehouse_destruction_transaction t ON wd.id = t.warehouse_destructions_id JOIN mydb.products p ON t.products_id = p.id WHERE wd.date BETWEEN \\'" +
+        "FROM katerinidb.products p; " +
+        "SET @sql = CONCAT('SELECT wd.id AS ID, wd.date AS Date, ', @sql_products, ' FROM katerinidb.warehouse_destructions wd JOIN katerinidb.warehouse_destruction_transaction t ON wd.id = t.warehouse_destructions_id JOIN katerinidb.products p ON t.products_id = p.id WHERE wd.date BETWEEN \\'" +
         `${startDate}` +
         "\\' AND \\'" +
         `${endDate}` +
@@ -112,8 +112,8 @@ const getDestructions = async (req, res, next) => {
       destructions =
         "SET @sql = NULL; " +
         "SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(IF(p.id = ', p.id, ', cdt.quantity, 0)) AS `', p.name, '`') ORDER BY p.id) INTO @sql " +
-        "FROM mydb.products p; " +
-        "SET @sql = CONCAT('SELECT cd.date, cd.id, ', @sql, ' FROM mydb.car_destructions cd JOIN mydb.car_destruction_transaction cdt ON cd.id = cdt.car_destructions_id JOIN mydb.products p ON cdt.products_id = p.id WHERE cd.cars_id = " +
+        "FROM katerinidb.products p; " +
+        "SET @sql = CONCAT('SELECT cd.date, cd.id, ', @sql, ' FROM katerinidb.car_destructions cd JOIN katerinidb.car_destruction_transaction cdt ON cd.id = cdt.car_destructions_id JOIN katerinidb.products p ON cdt.products_id = p.id WHERE cd.cars_id = " +
         `${carIdParam}` +
         " AND cd.date BETWEEN \\'" +
         `${startDate}` +
@@ -154,8 +154,8 @@ const getReturns = async (req, res, next) => {
       returns =
         "SET @sql = NULL; " +
         "SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(IF(p.id = ', p.id, ', rt.quantity, 0)) AS `', p.name, '`') ORDER BY p.id) INTO @sql " +
-        "FROM mydb.products p; " +
-        "SET @sql = CONCAT('SELECT r.date, r.id, ', @sql, ' FROM mydb.returns r JOIN mydb.returns_transaction rt ON r.id = rt.returns_id JOIN mydb.products p ON rt.products_id = p.id WHERE r.car_id = " +
+        "FROM katerinidb.products p; " +
+        "SET @sql = CONCAT('SELECT r.date, r.id, ', @sql, ' FROM katerinidb.returns r JOIN katerinidb.returns_transaction rt ON r.id = rt.returns_id JOIN katerinidb.products p ON rt.products_id = p.id WHERE r.car_id = " +
         `${carId}` +
         " AND r.date BETWEEN \\'" +
         `${startDate}` +
@@ -172,8 +172,8 @@ const getReturns = async (req, res, next) => {
       returns =
         "SET @sql = NULL; " +
         "SELECT GROUP_CONCAT(DISTINCT CONCAT('SUM(IF(p.id = ', p.id, ', t.quantity, 0)) AS `', p.name, '`') ORDER BY p.id) INTO @sql " +
-        "FROM mydb.products p; " +
-        "SET @sql = CONCAT('SELECT c.pinakida AS `pinakida`, ', @sql, ' FROM mydb.returns l JOIN mydb.returns_transaction t ON l.id = t.returns_id JOIN mydb.products p ON t.products_id = p.id JOIN mydb.cars c ON l.car_id = c.id WHERE l.date BETWEEN \\'" +
+        "FROM katerinidb.products p; " +
+        "SET @sql = CONCAT('SELECT c.pinakida AS `pinakida`, ', @sql, ' FROM katerinidb.returns l JOIN katerinidb.returns_transaction t ON l.id = t.returns_id JOIN katerinidb.products p ON t.products_id = p.id JOIN katerinidb.cars c ON l.car_id = c.id WHERE l.date BETWEEN \\'" +
         `${startDate}` +
         "\\' AND \\'" +
         `${endDate}` +
@@ -221,25 +221,25 @@ const getWareHouseStatus = async (req, res, next) => {
     .slice(0, 10);
 
   const warehouseStatus =
-    "SELECT p.id AS product_id, p.name AS product_name, COALESCE(SUM(loads_in_ntalika), 0) + COALESCE(SUM(apografi_proionton), 0) + COALESCE(SUM(returns), 0) - COALESCE(SUM(loads_out_ntalika), 0) - COALESCE(SUM(warehouse_destructions), 0) - COALESCE(SUM(car_destructions), 0) AS current_quantity FROM mydb.products p LEFT JOIN (SELECT products_id, SUM(quantity) AS loads_in_ntalika FROM mydb.loads l JOIN mydb.transfers t ON l.id = t.loads_id JOIN mydb.cars c ON l.car_id = c.id WHERE l.date BETWEEN '" +
+    "SELECT p.id AS product_id, p.name AS product_name, COALESCE(SUM(loads_in_ntalika), 0) + COALESCE(SUM(apografi_proionton), 0) + COALESCE(SUM(returns), 0) - COALESCE(SUM(loads_out_ntalika), 0) - COALESCE(SUM(warehouse_destructions), 0) - COALESCE(SUM(car_destructions), 0) AS current_quantity FROM katerinidb.products p LEFT JOIN (SELECT products_id, SUM(quantity) AS loads_in_ntalika FROM katerinidb.loads l JOIN katerinidb.transfers t ON l.id = t.loads_id JOIN katerinidb.cars c ON l.car_id = c.id WHERE l.date BETWEEN '" +
     `${formattedFirstDayOfMonth}` +
     "' AND '" +
     `${formattedLastDayOfMonth}` +
-    "' AND c.isNtalika = 1 GROUP BY products_id) AS lin ON p.id = lin.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS apografi_proionton FROM mydb.apografi_proionton ap JOIN mydb.apografi_proionton_transaction apt ON ap.apografi_id = apt.apografi_apografi_id WHERE ap.month = '" +
+    "' AND c.isNtalika = 1 GROUP BY products_id) AS lin ON p.id = lin.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS apografi_proionton FROM katerinidb.apografi_proionton ap JOIN katerinidb.apografi_proionton_transaction apt ON ap.apografi_id = apt.apografi_apografi_id WHERE ap.month = '" +
     `${formattedFirstDayOfPrevMonth}` +
-    "' GROUP BY products_id) AS apg ON p.id = apg.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS returns FROM mydb.returns r JOIN mydb.returns_transaction rt ON r.id = rt.returns_id WHERE r.date BETWEEN '" +
+    "' GROUP BY products_id) AS apg ON p.id = apg.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS returns FROM katerinidb.returns r JOIN katerinidb.returns_transaction rt ON r.id = rt.returns_id WHERE r.date BETWEEN '" +
     `${formattedFirstDayOfMonth}` +
     "' AND '" +
     `${formattedLastDayOfMonth}` +
-    "' GROUP BY products_id) AS ret ON p.id = ret.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS loads_out_ntalika FROM mydb.loads l JOIN mydb.transfers t ON l.id = t.loads_id JOIN mydb.cars c ON l.car_id = c.id WHERE l.date BETWEEN '" +
+    "' GROUP BY products_id) AS ret ON p.id = ret.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS loads_out_ntalika FROM katerinidb.loads l JOIN katerinidb.transfers t ON l.id = t.loads_id JOIN katerinidb.cars c ON l.car_id = c.id WHERE l.date BETWEEN '" +
     `${formattedFirstDayOfMonth}` +
     "' AND '" +
     `${formattedLastDayOfMonth}` +
-    "' AND c.isNtalika = 0 GROUP BY products_id) AS lout ON p.id = lout.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS warehouse_destructions FROM mydb.warehouse_destructions wd JOIN mydb.warehouse_destruction_transaction wdt ON wd.id = wdt.warehouse_destructions_id WHERE wd.date BETWEEN '" +
+    "' AND c.isNtalika = 0 GROUP BY products_id) AS lout ON p.id = lout.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS warehouse_destructions FROM katerinidb.warehouse_destructions wd JOIN katerinidb.warehouse_destruction_transaction wdt ON wd.id = wdt.warehouse_destructions_id WHERE wd.date BETWEEN '" +
     `${formattedFirstDayOfMonth}` +
     "' AND '" +
     `${formattedLastDayOfMonth}` +
-    "' GROUP BY products_id) AS wde ON p.id = wde.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS car_destructions FROM mydb.car_destructions cd JOIN mydb.car_destruction_transaction cdt ON cd.id = cdt.car_destructions_id WHERE cd.date BETWEEN '" +
+    "' GROUP BY products_id) AS wde ON p.id = wde.products_id LEFT JOIN (SELECT products_id, SUM(quantity) AS car_destructions FROM katerinidb.car_destructions cd JOIN katerinidb.car_destruction_transaction cdt ON cd.id = cdt.car_destructions_id WHERE cd.date BETWEEN '" +
     `${formattedFirstDayOfMonth}` +
     "' AND '" +
     `${formattedLastDayOfMonth}` +
@@ -286,7 +286,7 @@ const getTotalProductsDestructionsStatus = async (req, res, next) => {
 };
 
 const getCarList = async (req, res, next) => {
-  const carslist = "SELECT * FROM mydb.cars;";
+  const carslist = "SELECT * FROM katerinidb.cars;";
 
   try {
     const [results] = await connection.query(carslist);
@@ -300,7 +300,7 @@ const getCarList = async (req, res, next) => {
 };
 
 const getProducts = async (req, res, next) => {
-  const productsList = "SELECT * FROM mydb.products;";
+  const productsList = "SELECT * FROM katerinidb.products;";
 
   try {
     const [results] = await connection.query(productsList);
@@ -320,26 +320,26 @@ const getQuantities = async (req, res, next) => {
   if (flag === "load") {
     sqlquery = `
       SELECT p.id as products_id, COALESCE(t.quantity, 0) as quantity
-      FROM mydb.products p
-      LEFT JOIN mydb.transfers t ON p.id = t.products_id AND t.loads_id = ${id};
+      FROM katerinidb.products p
+      LEFT JOIN katerinidb.transfers t ON p.id = t.products_id AND t.loads_id = ${id};
     `;
   } else if (flag === "return") {
     sqlquery = `
       SELECT p.id as products_id, COALESCE(rt.quantity, 0) as quantity
-      FROM mydb.products p
-      LEFT JOIN mydb.returns_transaction rt ON p.id = rt.products_id AND rt.returns_id = ${id};
+      FROM katerinidb.products p
+      LEFT JOIN katerinidb.returns_transaction rt ON p.id = rt.products_id AND rt.returns_id = ${id};
     `;
   } else if (flag === "cardestruction") {
     sqlquery = `
       SELECT p.id as products_id, COALESCE(cdt.quantity, 0) as quantity
-      FROM mydb.products p
-      LEFT JOIN mydb.car_destruction_transaction cdt ON p.id = cdt.products_id AND cdt.car_destructions_id = ${id};
+      FROM katerinidb.products p
+      LEFT JOIN katerinidb.car_destruction_transaction cdt ON p.id = cdt.products_id AND cdt.car_destructions_id = ${id};
     `;
   } else if (flag === "warehousedestruction") {
     sqlquery = `
       SELECT p.id as products_id, COALESCE(wdt.quantity, 0) as quantity
-      FROM mydb.products p
-      LEFT JOIN mydb.warehouse_destruction_transaction wdt ON p.id = wdt.products_id AND wdt.warehouse_destructions_id = ${id};
+      FROM katerinidb.products p
+      LEFT JOIN katerinidb.warehouse_destruction_transaction wdt ON p.id = wdt.products_id AND wdt.warehouse_destructions_id = ${id};
     `;
   } else {
     const error = new HttpError(
@@ -366,7 +366,7 @@ const getWareHouseLastMonthStatus = async (req, res, next) => {
   const { year, month } = req.body;
 
   const warehouseLastMonthStatus =
-    "SELECT p.name AS 'Product Name', apt.quantity AS 'Quantity' FROM mydb.apografi_proionton ap JOIN mydb.apografi_proionton_transaction apt ON ap.apografi_id = apt.apografi_apografi_id JOIN mydb.products p ON apt.products_id = p.id WHERE YEAR(ap.month) = " +
+    "SELECT p.name AS 'Product Name', apt.quantity AS 'Quantity' FROM katerinidb.apografi_proionton ap JOIN katerinidb.apografi_proionton_transaction apt ON ap.apografi_id = apt.apografi_apografi_id JOIN katerinidb.products p ON apt.products_id = p.id WHERE YEAR(ap.month) = " +
     `${year}` +
     " AND MONTH(ap.month) = " +
     `${month}` +
@@ -379,7 +379,7 @@ const getWareHouseLastMonthStatus = async (req, res, next) => {
     res.json({ warehouseLastMonthStatus: results });
 
     const warehouseLastMonthDestructionsStatus =
-      "SELECT p.name AS 'Product Name', SUM(akt.quantity) AS 'Quantity' FROM mydb.apografi_katastrofon_transaction AS akt JOIN mydb.apografi_katastrofon AS ak ON akt.apografi_katastrofon_apografi_katastrofon_id = ak.apografi_katastrofon_id JOIN mydb.products AS p ON akt.products_id = p.id WHERE MONTH(ak.month) = " +
+      "SELECT p.name AS 'Product Name', SUM(akt.quantity) AS 'Quantity' FROM katerinidb.apografi_katastrofon_transaction AS akt JOIN katerinidb.apografi_katastrofon AS ak ON akt.apografi_katastrofon_apografi_katastrofon_id = ak.apografi_katastrofon_id JOIN katerinidb.products AS p ON akt.products_id = p.id WHERE MONTH(ak.month) = " +
       `${month}` +
       " AND YEAR(ak.month) = " +
       `${year}` +
@@ -404,7 +404,7 @@ const addLoads = async (req, res, next) => {
   try {
     // First query to insert the new load
     const [results] = await connection.query(
-      "INSERT INTO mydb.loads (car_id, date) VALUES (?, ?)",
+      "INSERT INTO katerinidb.loads (car_id, date) VALUES (?, ?)",
       [carId, date]
     );
 
@@ -413,7 +413,7 @@ const addLoads = async (req, res, next) => {
 
     // Construct the second query to insert the transfers
     let transfersQuery =
-      "INSERT INTO mydb.transfers (loads_id, products_id, quantity) VALUES";
+      "INSERT INTO katerinidb.transfers (loads_id, products_id, quantity) VALUES";
 
     for (const product of products) {
       const productId = parseInt(product.productId);
@@ -448,14 +448,14 @@ const addCarDestructions = async (req, res, next) => {
 
   try {
     const [results] = await connection.query(
-      "INSERT INTO mydb.car_destructions (cars_id, date) VALUES (?, ?)",
+      "INSERT INTO katerinidb.car_destructions (cars_id, date) VALUES (?, ?)",
       [carId, date]
     );
     const lastInsertedDestructionId = results.insertId;
 
     // Construct the second query to insert the car_destruction_transaction
     let transfersQuery =
-      "INSERT INTO mydb.car_destruction_transaction (car_destructions_id, products_id, quantity) VALUES";
+      "INSERT INTO katerinidb.car_destruction_transaction (car_destructions_id, products_id, quantity) VALUES";
 
     for (const key in products) {
       const productId = products[key].productId;
@@ -491,7 +491,7 @@ const addWarehouseDestructions = async (req, res, next) => {
   // First query to insert the new load
   try {
     const [results] = await connection.query(
-      "INSERT INTO mydb.warehouse_destructions (date) VALUES (?)",
+      "INSERT INTO katerinidb.warehouse_destructions (date) VALUES (?)",
       [date]
     );
     // Get the last inserted load ID
@@ -499,7 +499,7 @@ const addWarehouseDestructions = async (req, res, next) => {
 
     // Construct the second query to insert the car_destruction_transaction
     let transfersQuery =
-      "INSERT INTO mydb.warehouse_destruction_transaction (warehouse_destructions_id, products_id, quantity) VALUES";
+      "INSERT INTO katerinidb.warehouse_destruction_transaction (warehouse_destructions_id, products_id, quantity) VALUES";
 
     for (const product of products) {
       const { productId, quantity } = product;
@@ -533,7 +533,7 @@ const addCarReturns = async (req, res, next) => {
   // First query to insert the new load
   try {
     const [results] = await connection.query(
-      "INSERT INTO mydb.returns (car_id, date) VALUES (?, ?)",
+      "INSERT INTO katerinidb.returns (car_id, date) VALUES (?, ?)",
       [carId, date]
     );
     // Get the last inserted load ID
@@ -541,7 +541,7 @@ const addCarReturns = async (req, res, next) => {
 
     // Construct the second query to insert the car_destruction_transaction
     let transfersQuery =
-      "INSERT INTO mydb.returns_transaction (returns_id, products_id, quantity) VALUES";
+      "INSERT INTO katerinidb.returns_transaction (returns_id, products_id, quantity) VALUES";
 
     for (const product of products) {
       const productId = parseInt(product.productId);
@@ -576,13 +576,13 @@ const checkEntryExist = async (req, res, next) => {
 
   const checkQuery =
     flag === "editload"
-      ? `SELECT EXISTS(SELECT 1 FROM mydb.loads WHERE id = ${transactionid}) as entry_exists;`
+      ? `SELECT EXISTS(SELECT 1 FROM katerinidb.loads WHERE id = ${transactionid}) as entry_exists;`
       : flag === "editreturn"
-      ? `SELECT EXISTS(SELECT 1 FROM mydb.returns WHERE id = ${transactionid}) as entry_exists;`
+      ? `SELECT EXISTS(SELECT 1 FROM katerinidb.returns WHERE id = ${transactionid}) as entry_exists;`
       : flag === "editcardestruction"
-      ? `SELECT EXISTS(SELECT 1 FROM mydb.car_destructions WHERE id = ${transactionid}) as entry_exists;`
+      ? `SELECT EXISTS(SELECT 1 FROM katerinidb.car_destructions WHERE id = ${transactionid}) as entry_exists;`
       : flag === "editwarehousedestruction"
-      ? `SELECT EXISTS(SELECT 1 FROM mydb.warehouse_destructions WHERE id = ${transactionid}) as entry_exists;`
+      ? `SELECT EXISTS(SELECT 1 FROM katerinidb.warehouse_destructions WHERE id = ${transactionid}) as entry_exists;`
       : "";
 
   if (checkQuery !== "") {
@@ -603,13 +603,13 @@ const editEntry = async (req, res, next) => {
   const checkQuery =
     // Make sure the flag values are case insensitive
     flag.toLowerCase() === "editload"
-      ? `SELECT EXISTS(SELECT 1 FROM mydb.loads WHERE id = ${transactionid}) as entry_exists;`
+      ? `SELECT EXISTS(SELECT 1 FROM katerinidb.loads WHERE id = ${transactionid}) as entry_exists;`
       : flag.toLowerCase() === "editreturn"
-      ? `SELECT EXISTS(SELECT 1 FROM mydb.returns WHERE id = ${transactionid}) as entry_exists;`
+      ? `SELECT EXISTS(SELECT 1 FROM katerinidb.returns WHERE id = ${transactionid}) as entry_exists;`
       : flag.toLowerCase() === "editcardestruction"
-      ? `SELECT EXISTS(SELECT 1 FROM mydb.car_destructions WHERE id = ${transactionid}) as entry_exists;`
+      ? `SELECT EXISTS(SELECT 1 FROM katerinidb.car_destructions WHERE id = ${transactionid}) as entry_exists;`
       : flag.toLowerCase() === "editwarehousedestruction"
-      ? `SELECT EXISTS(SELECT 1 FROM mydb.warehouse_destructions WHERE id = ${transactionid}) as entry_exists;`
+      ? `SELECT EXISTS(SELECT 1 FROM katerinidb.warehouse_destructions WHERE id = ${transactionid}) as entry_exists;`
       : "";
 
   const checkIfExists = async (query) => {
@@ -633,8 +633,8 @@ const editEntry = async (req, res, next) => {
     if (flag.toLowerCase() === "editload" && exists) {
       let firstPart = `
       BEGIN;
-      DELETE FROM mydb.transfers WHERE loads_id = ${transactionid};
-      INSERT INTO mydb.transfers (loads_id, products_id, quantity) VALUES
+      DELETE FROM katerinidb.transfers WHERE loads_id = ${transactionid};
+      INSERT INTO katerinidb.transfers (loads_id, products_id, quantity) VALUES
     `;
       products.forEach((product) => {
         const values = `${transactionid}, ${product.productId}, ${product.quantity}`;
@@ -645,8 +645,8 @@ const editEntry = async (req, res, next) => {
     } else if (flag.toLowerCase() === "editreturn" && exists) {
       let firstPart = `
       BEGIN;
-      DELETE FROM mydb.returns_transaction WHERE returns_id = ${transactionid};
-      INSERT INTO mydb.returns_transaction (returns_id, products_id, quantity) VALUES
+      DELETE FROM katerinidb.returns_transaction WHERE returns_id = ${transactionid};
+      INSERT INTO katerinidb.returns_transaction (returns_id, products_id, quantity) VALUES
     `;
       products.forEach((product) => {
         const values = `${transactionid}, ${product.productId}, ${product.quantity}`;
@@ -657,8 +657,8 @@ const editEntry = async (req, res, next) => {
     } else if (flag.toLowerCase() === "editcardestruction" && exists) {
       let firstPart = `
       BEGIN;
-      DELETE FROM mydb.car_destruction_transaction WHERE car_destructions_id = ${transactionid};
-      INSERT INTO mydb.car_destruction_transaction (car_destructions_id, products_id, quantity) VALUES
+      DELETE FROM katerinidb.car_destruction_transaction WHERE car_destructions_id = ${transactionid};
+      INSERT INTO katerinidb.car_destruction_transaction (car_destructions_id, products_id, quantity) VALUES
     `;
       products.forEach((product) => {
         const values = `${transactionid}, ${product.productId}, ${product.quantity}`;
@@ -669,8 +669,8 @@ const editEntry = async (req, res, next) => {
     } else if (flag.toLowerCase() === "editwarehousedestruction" && exists) {
       let firstPart = `
       BEGIN;
-      DELETE FROM mydb.warehouse_destruction_transaction WHERE warehouse_destructions_id = ${transactionid};
-      INSERT INTO mydb.warehouse_destruction_transaction (warehouse_destructions_id, products_id, quantity) VALUES
+      DELETE FROM katerinidb.warehouse_destruction_transaction WHERE warehouse_destructions_id = ${transactionid};
+      INSERT INTO katerinidb.warehouse_destruction_transaction (warehouse_destructions_id, products_id, quantity) VALUES
     `;
       products.forEach((product) => {
         const values = `${transactionid}, ${product.productId}, ${product.quantity}`;
@@ -705,36 +705,36 @@ const deleteItem = async (req, res, next) => {
   if (flag === "deleteLoadItem") {
     query = `
       BEGIN;
-      DELETE FROM mydb.transfers
+      DELETE FROM katerinidb.transfers
       WHERE loads_id = ${itemId};
-      DELETE FROM mydb.loads
+      DELETE FROM katerinidb.loads
       WHERE id = ${itemId};
       COMMIT;
     `;
   } else if (flag === "deleteReturnItem") {
     query = `
       BEGIN;
-      DELETE FROM mydb.returns_transaction
+      DELETE FROM katerinidb.returns_transaction
       WHERE returns_id = ${itemId};
-      DELETE FROM mydb.returns
+      DELETE FROM katerinidb.returns
       WHERE id = ${itemId};
       COMMIT;
     `;
   } else if (flag === "deleteCarDestructionItem") {
     query = `
       BEGIN;
-      DELETE FROM mydb.car_destruction_transaction
+      DELETE FROM katerinidb.car_destruction_transaction
       WHERE car_destructions_id = ${itemId};
-      DELETE FROM mydb.car_destructions
+      DELETE FROM katerinidb.car_destructions
       WHERE id = ${itemId};
       COMMIT;
     `;
   } else if (flag === "deleteWarehouseDestructionItem") {
     query = `
     BEGIN;
-    DELETE FROM mydb.warehouse_destruction_transaction
+    DELETE FROM katerinidb.warehouse_destruction_transaction
     WHERE warehouse_destructions_id = ${itemId};
-    DELETE FROM mydb.warehouse_destructions
+    DELETE FROM katerinidb.warehouse_destructions
     WHERE id = ${itemId};
     COMMIT;
     `;

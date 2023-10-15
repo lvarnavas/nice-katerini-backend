@@ -2,7 +2,7 @@
   "env": {
       "DB_USER": "root",
       "DB_PASSWORD": "root",
-      "DB_NAME": "mydb",
+      "DB_NAME": "katerinidb",
       "DB_HOST": "localhost",
       "PORT": "5000"
   }

@@ -9,19 +9,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema katerinidb
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema katerinidb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS \`mydb\` DEFAULT CHARACTER SET utf8 ;
-USE \`mydb\` ;
+CREATE SCHEMA IF NOT EXISTS \`katerinidb\` DEFAULT CHARACTER SET utf8 ;
+USE \`katerinidb\` ;
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`users\`
+-- Table \`katerinidb\`.\`users\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`users\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`users\` (
   \`id\` INT NOT NULL AUTO_INCREMENT,
   \`username\` VARCHAR(30) NULL,
   \`password\` TEXT NULL,
@@ -31,9 +31,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`cars\`
+-- Table \`katerinidb\`.\`cars\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`cars\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`cars\` (
   \`id\` INT NOT NULL AUTO_INCREMENT,
   \`pinakida\` VARCHAR(10) NULL,
   \`isNtalika\` TINYINT NULL DEFAULT 0,
@@ -42,9 +42,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`loads\`
+-- Table \`katerinidb\`.\`loads\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`loads\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`loads\` (
   \`id\` INT NOT NULL AUTO_INCREMENT,
   \`date\` DATE NULL,
   \`car_id\` INT NULL,
@@ -52,16 +52,16 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`loads\` (
   INDEX \`fk_fortomata_car1_idx\` (\`car_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_fortomata_car1\`
     FOREIGN KEY (\`car_id\`)
-    REFERENCES \`mydb\`.\`cars\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`cars\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`products\`
+-- Table \`katerinidb\`.\`products\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`products\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`products\` (
   \`id\` INT NOT NULL AUTO_INCREMENT,
   \`name\` VARCHAR(45) NULL,
   PRIMARY KEY (\`id\`))
@@ -69,9 +69,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`transfers\`
+-- Table \`katerinidb\`.\`transfers\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`transfers\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`transfers\` (
   \`quantity\` INT NULL,
   \`products_id\` INT NOT NULL,
   \`loads_id\` INT NOT NULL,
@@ -79,21 +79,21 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`transfers\` (
   INDEX \`fk_transfer_fortomata1_idx\` (\`loads_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_transfer_products1\`
     FOREIGN KEY (\`products_id\`)
-    REFERENCES \`mydb\`.\`products\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`products\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT \`fk_transfer_fortomata1\`
     FOREIGN KEY (\`loads_id\`)
-    REFERENCES \`mydb\`.\`loads\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`loads\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`warehouse_destructions\`
+-- Table \`katerinidb\`.\`warehouse_destructions\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`warehouse_destructions\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`warehouse_destructions\` (
   \`id\` INT NOT NULL AUTO_INCREMENT,
   \`date\` DATE NULL,
   PRIMARY KEY (\`id\`))
@@ -101,9 +101,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`car_destructions\`
+-- Table \`katerinidb\`.\`car_destructions\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`car_destructions\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`car_destructions\` (
   \`id\` INT NOT NULL AUTO_INCREMENT,
   \`date\` DATE NULL,
   \`cars_id\` INT NULL,
@@ -111,16 +111,16 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`car_destructions\` (
   INDEX \`fk_car_destructions_cars1_idx\` (\`cars_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_car_destructions_cars1\`
     FOREIGN KEY (\`cars_id\`)
-    REFERENCES \`mydb\`.\`cars\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`cars\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`car_destruction_transaction\`
+-- Table \`katerinidb\`.\`car_destruction_transaction\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`car_destruction_transaction\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`car_destruction_transaction\` (
   \`car_destructions_id\` INT NULL,
   \`products_id\` INT NULL,
   \`quantity\` VARCHAR(45) NULL,
@@ -128,21 +128,21 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`car_destruction_transaction\` (
   INDEX \`fk_car_destruction_transaction_car_destructions1_idx\` (\`car_destructions_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_katastrofes_autokinitwn_products1\`
     FOREIGN KEY (\`products_id\`)
-    REFERENCES \`mydb\`.\`products\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`products\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT \`fk_car_destruction_transaction_car_destructions1\`
     FOREIGN KEY (\`car_destructions_id\`)
-    REFERENCES \`mydb\`.\`car_destructions\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`car_destructions\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`returns\`
+-- Table \`katerinidb\`.\`returns\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`returns\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`returns\` (
   \`id\` INT NOT NULL AUTO_INCREMENT,
   \`date\` DATE NULL,
   \`car_id\` INT NULL,
@@ -150,16 +150,16 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`returns\` (
   INDEX \`fk_epistrofes_car1_idx\` (\`car_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_epistrofes_car1\`
     FOREIGN KEY (\`car_id\`)
-    REFERENCES \`mydb\`.\`cars\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`cars\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`warehouse_destruction_transaction\`
+-- Table \`katerinidb\`.\`warehouse_destruction_transaction\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`warehouse_destruction_transaction\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`warehouse_destruction_transaction\` (
   \`warehouse_destructions_id\` INT NOT NULL,
   \`products_id\` INT NOT NULL,
   \`quantity\` INT NOT NULL,
@@ -167,21 +167,21 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`warehouse_destruction_transaction\` (
   INDEX \`fk_warehouse_destruction_transaction_warehouse_destructions_idx\` (\`warehouse_destructions_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_warehouse_destruction_transaction_products1\`
     FOREIGN KEY (\`products_id\`)
-    REFERENCES \`mydb\`.\`products\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`products\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT \`fk_warehouse_destruction_transaction_warehouse_destructions1\`
     FOREIGN KEY (\`warehouse_destructions_id\`)
-    REFERENCES \`mydb\`.\`warehouse_destructions\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`warehouse_destructions\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`returns_transaction\`
+-- Table \`katerinidb\`.\`returns_transaction\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`returns_transaction\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`returns_transaction\` (
   \`returns_id\` INT NULL,
   \`products_id\` INT NULL,
   \`quantity\` INT NULL,
@@ -189,21 +189,21 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`returns_transaction\` (
   INDEX \`fk_returns_transaction_returns1_idx\` (\`returns_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_returns_transaction_products1\`
     FOREIGN KEY (\`products_id\`)
-    REFERENCES \`mydb\`.\`products\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`products\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT \`fk_returns_transaction_returns1\`
     FOREIGN KEY (\`returns_id\`)
-    REFERENCES \`mydb\`.\`returns\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`returns\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`apografi_proionton\`
+-- Table \`katerinidb\`.\`apografi_proionton\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`apografi_proionton\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`apografi_proionton\` (
   \`apografi_id\` INT NOT NULL AUTO_INCREMENT,
   \`month\` DATE NULL,
   PRIMARY KEY (\`apografi_id\`))
@@ -211,9 +211,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`apografi_proionton_transaction\`
+-- Table \`katerinidb\`.\`apografi_proionton_transaction\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`apografi_proionton_transaction\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`apografi_proionton_transaction\` (
   \`apografi_apografi_id\` INT NOT NULL,
   \`products_id\` INT NOT NULL,
   \`quantity\` INT NULL,
@@ -221,21 +221,21 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`apografi_proionton_transaction\` (
   INDEX \`fk_apografi_transaction_products1_idx\` (\`products_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_apografi_transaction_apografi1\`
     FOREIGN KEY (\`apografi_apografi_id\`)
-    REFERENCES \`mydb\`.\`apografi_proionton\` (\`apografi_id\`)
+    REFERENCES \`katerinidb\`.\`apografi_proionton\` (\`apografi_id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT \`fk_apografi_transaction_products1\`
     FOREIGN KEY (\`products_id\`)
-    REFERENCES \`mydb\`.\`products\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`products\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`apografi_katastrofon\`
+-- Table \`katerinidb\`.\`apografi_katastrofon\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`apografi_katastrofon\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`apografi_katastrofon\` (
   \`apografi_katastrofon_id\` INT NOT NULL AUTO_INCREMENT,
   \`month\` DATE NULL,
   PRIMARY KEY (\`apografi_katastrofon_id\`))
@@ -243,9 +243,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`apografi_katastrofon_transaction\`
+-- Table \`katerinidb\`.\`apografi_katastrofon_transaction\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`apografi_katastrofon_transaction\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`apografi_katastrofon_transaction\` (
   \`apografi_katastrofon_apografi_katastrofon_id\` INT NOT NULL,
   \`products_id\` INT NOT NULL,
   \`quantity\` INT NULL,
@@ -253,21 +253,21 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`apografi_katastrofon_transaction\` (
   INDEX \`fk_apografi_katastrofon_transaction_products1_idx\` (\`products_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_apografi_katastrofon_transaction_apografi_katastrofon1\`
     FOREIGN KEY (\`apografi_katastrofon_apografi_katastrofon_id\`)
-    REFERENCES \`mydb\`.\`apografi_katastrofon\` (\`apografi_katastrofon_id\`)
+    REFERENCES \`katerinidb\`.\`apografi_katastrofon\` (\`apografi_katastrofon_id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT \`fk_apografi_katastrofon_transaction_products1\`
     FOREIGN KEY (\`products_id\`)
-    REFERENCES \`mydb\`.\`products\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`products\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`stock_taking\`
+-- Table \`katerinidb\`.\`stock_taking\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`stock_taking\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`stock_taking\` (
   \`id\` INT NOT NULL AUTO_INCREMENT,
   \`date\` DATE NULL,
   PRIMARY KEY (\`id\`))
@@ -275,9 +275,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table \`mydb\`.\`stock_taking_transaction\`
+-- Table \`katerinidb\`.\`stock_taking_transaction\`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS \`mydb\`.\`stock_taking_transaction\` (
+CREATE TABLE IF NOT EXISTS \`katerinidb\`.\`stock_taking_transaction\` (
   \`stock_taking_id\` INT NOT NULL,
   \`products_id\` INT NOT NULL,
   \`quantity\` INT NULL,
@@ -285,12 +285,12 @@ CREATE TABLE IF NOT EXISTS \`mydb\`.\`stock_taking_transaction\` (
   INDEX \`fk_stock_taking_transaction_products1_idx\` (\`products_id\` ASC) VISIBLE,
   CONSTRAINT \`fk_stock_taking_transaction_stock_taking1\`
     FOREIGN KEY (\`stock_taking_id\`)
-    REFERENCES \`mydb\`.\`stock_taking\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`stock_taking\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT \`fk_stock_taking_transaction_products1\`
     FOREIGN KEY (\`products_id\`)
-    REFERENCES \`mydb\`.\`products\` (\`id\`)
+    REFERENCES \`katerinidb\`.\`products\` (\`id\`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
